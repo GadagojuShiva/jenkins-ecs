@@ -19,7 +19,7 @@ pipeline {
                     // Use Jenkins credentials to authenticate with AWS ECR
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', 
                                       accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
-                                      credentialsId: 'aws-credentials-id', 
+                                      credentialsId: 'aws-cred', 
                                       secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         // Define the AWS ECR repository URL
                         def ecrUrl = 'https://891377099888.dkr.ecr.us-east-1.amazonaws.com'
