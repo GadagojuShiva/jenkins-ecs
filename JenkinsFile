@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1' /* Update with your desired region */
+        ECR_REPO_NAME = 'task-2' /* Update with your ECR repository name */
+        CLUSTER_NAME = 'my-cluster' /* Update with your ECS cluster name */
+        SERVICE_NAME = 'my-service' /* Update with your ECS service name */
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/GadagojuShiva/jenkins-ecs' /* Replace with your GitHub repository URL */
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    docker.build("-t ${ECR_REPO_NAME}:${env.BUILD_NUMBER} .")
+                    docker.withRegistry('https://123456789012.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-ecr-credentials') {
+                        docker.image("${ECR_REPO_NAME}:${env.BUILD_NUMBER}").push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to ECS Fargate') {
+            steps {
+                script {
+                    sh 'aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --force-new-deployment'
+                }
+            }
+        }
+    }
+}
