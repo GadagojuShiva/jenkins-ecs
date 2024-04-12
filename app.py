@@ -1,5 +1,4 @@
 from flask import Flask
-from werkzeug.urls import quote
 
 app = Flask(__name__)
 
