@@ -8,10 +8,11 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 
 # Install Flask and other dependencies
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
 
 # Copy the current directory contents into the container at /app
-COPY . /app
+COPY . .
 
 # Expose port 5000 to allow communication to/from the Flask application
 EXPOSE 5000
