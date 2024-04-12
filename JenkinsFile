@@ -1,6 +1,11 @@
 pipeline {
-    agent any
-    
+    agent {
+        docker {
+            image 'python:3.9' // You can specify any Python version you need
+            args '-p 5000:5000' // Port mapping if your Flask app runs on port 5000
+        }
+    }
+
     environment {
         registryCredential = 'ecr:eu-north-1:awscreds'
         appRegistry = "730335353897.dkr.ecr.eu-north-1.amazonaws.com/task-2"
