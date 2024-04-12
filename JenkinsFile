@@ -2,11 +2,11 @@ pipeline {
     agent any
     
     environment {
-        registryCredential = 'ecr:eu-north-1:awscreds'
-        appRegistry = "730335353897.dkr.ecr.eu-north-1.amazonaws.com/task-2"
-        myprojectRegistry = "https://730335353897.dkr.ecr.eu-north-1.amazonaws.com"
-        cluster = "my-task-2-cluster"
-        service = "myprojectapp-service"
+        registryCredential = 'ecr:us-east-1:awscreds'
+        appRegistry = "730335353897.dkr.ecr.us-east-1.amazonaws.com/task-2-repo"
+        myprojectRegistry = "https://730335353897.dkr.ecr.us-east-1.amazonaws.com"
+        cluster = "my-ecs-cluster"
+        service = "my-service"
     }
     
     stages {
@@ -37,7 +37,7 @@ pipeline {
 
         stage('Deploy to ECS') {
             steps {
-                withAWS(credentials: 'awscreds', region: 'eu-north-1') {
+                withAWS(credentials: 'awscreds', region: 'us-east-1') {
                     sh "aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment"
                 }
             }
